@@ -1,3 +1,4 @@
+import re
 import urllib
 
 from jivago.lang.stream import Stream
@@ -10,15 +11,23 @@ class CommandResource(object):
 
     @POST
     def post(self, body: dict) -> dict:
-        print(body)
-        args = urllib.parse.unquote(body['text']).split("+")
-        question = args[0]
-        responses = args[1::]
+        unquoted_query = urllib.parse.unquote(body['text']).replace("+", " ")
+        tokens = Stream(re.findall('"([^"]*)"', unquoted_query)).filter(lambda x: x != '+').toList()
+
+        # args = unquoted_query.split("+")
+        question = tokens[0]
+        responses = tokens[1::]
         button_attachments = Stream(responses).map(
             lambda x: {"callback_id": "vote_callback", "name": "poll", "text": x, "type": "button",
                        "value": x}).toList()
+
+        text = question
+
+        for option in responses:
+            text += f"\n- {option} ->  "
+
         response = {"response_type": "in_channel",
-                    "attachments": [{"fallback": "poll button", "text": question, "callback_id": "vote_callback",
+                    "attachments": [{"fallback": "poll button", "text": text, "callback_id": "vote_callback",
                                      "actions": button_attachments}]}
-        print(response)
+        
         return response
