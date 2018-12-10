@@ -1,19 +1,12 @@
 import json
 import urllib
 
-from jivago.lang.annotations import Inject
 from jivago.wsgi.annotations import Resource
 from jivago.wsgi.methods import POST
-
-from poll_bot.app.message_sender import MessageSender
 
 
 @Resource("/vote-callback")
 class VoteCallbackResource(object):
-
-    @Inject
-    def __init__(self, message_sender: MessageSender):
-        self.message_sender = message_sender
 
     @POST
     def vote_callback(self, body: dict) -> dict:
