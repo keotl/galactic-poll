@@ -17,7 +17,7 @@ class CommandResource(object):
         # args = unquoted_query.split("+")
         question = tokens[0]
         responses = tokens[1::]
-        button_attachments = Stream(responses).map(
+        button_actions = Stream(responses).map(
             lambda x: {"callback_id": "vote_callback", "name": "poll", "text": x, "type": "button",
                        "value": x}).toList()
 
@@ -26,8 +26,22 @@ class CommandResource(object):
         for option in responses:
             text += f"\n- {option} ->  "
 
-        response = {"response_type": "in_channel",
-                    "attachments": [{"fallback": "poll button", "text": text, "callback_id": "vote_callback",
-                                     "actions": button_attachments}]}
-        
+        if len(button_actions) > 5:
+            splitted_attachments = [button_actions[i:i + 5] for i in
+                                    range(0, len(button_actions), 5)]
+            response = {"response_type": "in_channel",
+                        "attachments": [{"fallback": "poll button", "text": text, "callback_id": "vote_callback",
+                                         "actions": splitted_attachments[0]},
+                                        *Stream(splitted_attachments[1::]).map(lambda x:
+                                                                               {"fallback": "poll button", "text": "",
+                                                                                "callback_id": "vote_callback",
+                                                                                "actions": splitted_attachments[0]}
+                                                                               )
+                                        ]}
+        else:
+
+            response = {"response_type": "in_channel",
+                        "attachments": [{"fallback": "poll button", "text": text, "callback_id": "vote_callback",
+                                         "actions": button_actions}]}
+
         return response
