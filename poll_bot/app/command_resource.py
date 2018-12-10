@@ -35,7 +35,7 @@ class CommandResource(object):
                                         *Stream(splitted_attachments[1::]).map(lambda x:
                                                                                {"fallback": "poll button", "text": "",
                                                                                 "callback_id": "vote_callback",
-                                                                                "actions": splitted_attachments[0]}
+                                                                                "actions": x}
                                                                                )
                                         ]}
         else:
