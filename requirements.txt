@@ -1,6 +1,7 @@
 certifi==2018.11.29
 chardet==3.0.4
 croniter==0.3.26
+gunicorn==19.9.0
 idna==2.8
 Jinja2==2.10
 git+https://github.com/keotl/jivago.git
