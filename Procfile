@@ -1,1 +1,1 @@
-web: gunicorn poll_bot.main
+web: gunicorn poll_bot.main --workers=1
