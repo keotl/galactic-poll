@@ -11,7 +11,7 @@ class CommandResource(object):
     @POST
     def post(self, body: dict) -> dict:
         print(body)
-        args = urllib.parse.unquote(body['text']).split(" ")
+        args = urllib.parse.unquote(body['text']).split("+")
         question = args[0]
         responses = args[1::]
         button_attachments = Stream(responses).map(
