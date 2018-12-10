@@ -48,7 +48,8 @@ class VoteCallbackResource(object):
             new_message.append(f"{header} -> {respondents}")
 
         original_message["attachments"][0]['text'] = "\n".join(new_message)
-        original_message["attachments"][0]['actions'] = Stream(original_message['attachments'][0]['actions']).map(
+        for x in original_message['attachments']:
+            x['actions'] = Stream(x['actions']).map(
             lambda action: {
                 "id": action['id'],
                 "name": action['name'],
