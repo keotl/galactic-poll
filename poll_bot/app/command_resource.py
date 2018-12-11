@@ -20,7 +20,7 @@ class CommandResource(object):
         return self.post(body, callback_id="vote_callback")
 
     def post(self, body: dict, callback_id="vote_callback") -> dict:
-        unquoted_query = urllib.parse.unquote(body['text']).replace("+", " ")
+        unquoted_query = urllib.parse.unquote(body['text']).replace("+", " ").replace('”', '"').replace('“', '"')
         tokens = Stream(re.findall('"([^"]*)"', unquoted_query)).filter(lambda x: x != '+').toList()
 
         # args = unquoted_query.split("+")
