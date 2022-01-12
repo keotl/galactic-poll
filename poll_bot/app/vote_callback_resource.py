@@ -1,5 +1,6 @@
 import json
-import urllib
+import urllib.parse
+import logging
 
 from jivago.lang.stream import Stream
 from jivago.wsgi.annotations import Resource, Path
@@ -19,6 +20,9 @@ class VoteCallbackResource(object):
         if message_body == ['']:
             message_body = urllib.parse.unquote(original_message["attachments"][0]['text']).replace("+", " ").split(
                 "\n")
+
+        if len(message_body) > 0 and message_body[-1][-1] == ";":
+            message_body[-1] = message_body[-1] + " "
 
         new_message = [message_body[0]]
 
