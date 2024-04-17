@@ -14,4 +14,4 @@ RUN adduser galactic-poll -G nobody -u 2000 -D -H
 USER galactic-poll:nobody
 
 EXPOSE 80
-CMD ["gunicorn", "--workers=1", "--threads=4","--bind=0.0.0.0:80", "poll_bot.main"]
+CMD ["gunicorn", "--workers=1", "--threads=4","--bind=0.0.0.0:8080", "poll_bot.main"]

@@ -1,2 +1,2 @@
-gunicorn==19.9.0
+gunicorn==22.0.0
 jivago==0.5.0
